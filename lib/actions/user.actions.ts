@@ -1,4 +1,4 @@
-'user server';
+'use server';
 
 import { clerkClient } from "@clerk/nextjs/server";
 import { parseStringify } from "../utils";
