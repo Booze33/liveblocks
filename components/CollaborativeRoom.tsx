@@ -85,7 +85,7 @@ const CollaborativeRoom = ({ roomId, roomMetadata }: CollaborativeRoomProps) => 
 
               {currentUserType === 'editor' && !editing && (
                 <Image
-                  src="/assets/icons/edit.evg"
+                  src="/assets/icons/edit.svg"
                   alt="edit"
                   width={24}
                   height={24}
