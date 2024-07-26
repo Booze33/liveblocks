@@ -2,8 +2,8 @@
 
 import { nanoid } from 'nanoid'
 import { liveblocks } from '../liveblocks';
-import { getAccessType, parseStringify } from '../utils';
 import { revalidatePath } from 'next/cache';
+import { getAccessType, parseStringify } from '../utils';
 import { redirect } from 'next/navigation';
 
 export const createDocument = async ({ userId, email }: CreateDocumentParams) => {
@@ -37,16 +37,16 @@ export const createDocument = async ({ userId, email }: CreateDocumentParams) =>
 export const getDocument = async ({ roomId, userId }: { roomId: string; userId: string }) => {
   try {
       const room = await liveblocks.getRoom(roomId);
-
-    const hasAccess = Object.keys(room.usersAccesses).includes(userId);
-
-    if (!hasAccess) {
-      throw new Error('You do not have access to this document');
-    }
-
-    return parseStringify(room);
-  } catch (err) {
-    console.log(`Error happened while getting a room: ${err}`);
+    
+      const hasAccess = Object.keys(room.usersAccesses).includes(userId);
+    
+      if(!hasAccess) {
+        throw new Error('You do not have access to this document');
+      }
+    
+      return parseStringify(room);
+  } catch (error) {
+    console.log(`Error happened while getting a room: ${error}`);
   }
 }
 
@@ -61,18 +61,18 @@ export const updateDocument = async (roomId: string, title: string) => {
     revalidatePath(`/documents/${roomId}`);
 
     return parseStringify(updatedRoom);
-  } catch (err) {
-    console.log(`Error happened while updating a room: ${err}`);
+  } catch (error) {
+    console.log(`Error happened while updating a room: ${error}`);
   }
 }
 
-export const getDocuments = async (email: string) => {
+export const getDocuments = async (email: string ) => {
   try {
       const rooms = await liveblocks.getRooms({ userId: email });
-
-    return parseStringify(rooms);
-  } catch (err) {
-    console.log(`Error happened while getting a room: ${err}`);
+    
+      return parseStringify(rooms);
+  } catch (error) {
+    console.log(`Error happened while getting rooms: ${error}`);
   }
 }
 
@@ -137,7 +137,7 @@ export const deleteDocument = async (roomId: string) => {
     await liveblocks.deleteRoom(roomId);
     revalidatePath('/');
     redirect('/');
-  } catch (err) {
-    console.log(`Error happened while deleting a document: ${err}`);
+  } catch (error) {
+    console.log(`Error happened while deleting a room: ${error}`);
   }
 }

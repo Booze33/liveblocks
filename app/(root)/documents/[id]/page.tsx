@@ -1,9 +1,8 @@
-import CollaborativeRoom from '@/components/CollaborativeRoom'
-import { getDocument } from '@/lib/actions/room.actions';
-import { getClerkUsers } from '@/lib/actions/user.actions';
-import { currentUser } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
-import React from 'react'
+import CollaborativeRoom from "@/components/CollaborativeRoom"
+import { getDocument } from "@/lib/actions/room.actions";
+import { getClerkUsers } from "@/lib/actions/user.actions";
+import { currentUser } from "@clerk/nextjs/server"
+import { redirect } from "next/navigation";
 
 const Document = async ({ params: { id } }: SearchParamProps) => {
   const clerkUser = await currentUser();
@@ -24,13 +23,13 @@ const Document = async ({ params: { id } }: SearchParamProps) => {
     userType: room.usersAccesses[user.email]?.includes('room:write')
       ? 'editor'
       : 'viewer'
-  }));
+  }))
 
   const currentUserType = room.usersAccesses[clerkUser.emailAddresses[0].emailAddress]?.includes('room:write') ? 'editor' : 'viewer';
 
   return (
     <main className="flex w-full flex-col items-center">
-      <CollaborativeRoom
+      <CollaborativeRoom 
         roomId={id}
         roomMetadata={room.metadata}
         users={usersData}
