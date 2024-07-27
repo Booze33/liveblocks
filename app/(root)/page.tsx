@@ -1,15 +1,15 @@
+import AddDocumentBtn from '@/components/AddDocumentBtn';
+import { DeleteModal } from '@/components/DeleteModal';
 import Header from '@/components/Header'
-import AddDocumentBtn from '@/components/AddDocumentBtn'
+import Notifications from '@/components/Notifications';
 import { Button } from '@/components/ui/button'
-import Image from 'next/image'
+import { getDocuments } from '@/lib/actions/room.actions';
+import { dateConverter } from '@/lib/utils';
 import { SignedIn, UserButton } from '@clerk/nextjs'
-import React from 'react'
-import { redirect } from 'next/navigation'
-import { EmailAddress, currentUser } from '@clerk/nextjs/server'
-import { getDocuments } from '@/lib/actions/room.actions'
-import { metadata } from '../layout'
-import Link from 'next/link'
-import { dateConverter } from '@/lib/utils'
+import { currentUser } from '@clerk/nextjs/server';
+import Image from 'next/image';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 const Home = async () => {
   const clerkUser = await currentUser();
@@ -20,29 +20,29 @@ const Home = async () => {
   return (
     <main className="home-container">
       <Header className="sticky left-0 top-0">
-        <div className="flex items-center gap-2 lg:gap=4">
-          Notification
+        <div className="flex items-center gap-2 lg:gap-4">
+          <Notifications />
           <SignedIn>
-            <UserButton  />
+            <UserButton />
           </SignedIn>
         </div>
       </Header>
 
-      {roomDocuments.length > 0 ? (
+      {roomDocuments.data.length > 0 ? (
         <div className="document-list-container">
           <div className="document-list-title">
-            <h3 className="text-28-semibold">All Documents</h3>
-            <AddDocumentBtn
+            <h3 className="text-28-semibold">All documents</h3>
+            <AddDocumentBtn 
               userId={clerkUser.id}
               email={clerkUser.emailAddresses[0].emailAddress}
             />
           </div>
-          <ul className="documents-ul">
-            {roomDocuments.data.map(({id, metadata, createdAt}: any) => (
+          <ul className="document-ul">
+            {roomDocuments.data.map(({ id, metadata, createdAt }: any) => (
               <li key={id} className="document-list-item">
                 <Link href={`/documents/${id}`} className="flex flex-1 items-center gap-4">
                   <div className="hidden rounded-md bg-dark-500 p-2 sm:block">
-                    <Image
+                    <Image 
                       src="/assets/icons/doc.svg"
                       alt="file"
                       width={40}
@@ -54,14 +54,14 @@ const Home = async () => {
                     <p className="text-sm font-light text-blue-100">Created about {dateConverter(createdAt)}</p>
                   </div>
                 </Link>
-                <DeleteModal />
+                <DeleteModal roomId={id} />
               </li>
             ))}
           </ul>
         </div>
       ): (
-        <div className='document-list-empty'>
-          <Image
+        <div className="document-list-empty">
+          <Image 
             src="/assets/icons/doc.svg"
             alt="Document"
             width={40}
@@ -69,7 +69,7 @@ const Home = async () => {
             className="mx-auto"
           />
 
-          <AddDocumentBtn
+          <AddDocumentBtn 
             userId={clerkUser.id}
             email={clerkUser.emailAddresses[0].emailAddress}
           />
