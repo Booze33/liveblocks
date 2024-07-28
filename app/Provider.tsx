@@ -1,7 +1,6 @@
-'use client'
+'use client';
 
 import Loader from '@/components/Loader';
-import { getDocuments } from '@/lib/actions/room.actions';
 import { getClerkUsers, getDocumentUsers } from '@/lib/actions/user.actions';
 import { useUser } from '@clerk/nextjs';
 import { ClientSideSuspense, LiveblocksProvider } from '@liveblocks/react/suspense';
@@ -11,10 +10,10 @@ const Provider = ({ children }: { children: ReactNode}) => {
   const { user: clerkUser } = useUser();
 
   return (
-    <LiveblocksProvider
+    <LiveblocksProvider 
       authEndpoint="/api/liveblocks-auth"
       resolveUsers={async ({ userIds }) => {
-        const users = await getClerkUsers({ userIds });
+        const users = await getClerkUsers({ userIds});
 
         return users;
       }}

@@ -11,9 +11,10 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import React from 'react';
 
-import { FloatingComposer, FloatingThreads, LiveblocksPlugin, liveblocksConfig, useEditorStatus } from '@liveblocks/react-lexical'
+import { FloatingComposer, FloatingThreads, liveblocksConfig, LiveblocksPlugin, useEditorStatus } from '@liveblocks/react-lexical'
 import Loader from '../Loader';
-import FloatingToolbarPlugin from './plugins/FloatingToolbarPlugin';
+
+import FloatingToolbarPlugin from './plugins/FloatingToolbarPlugin'
 import { useThreads } from '@liveblocks/react/suspense';
 import Comments from '../Comments';
 import { DeleteModal } from '../DeleteModal';
@@ -26,7 +27,7 @@ function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
 }
 
-export function Editor({ roomId, currentUserType }: {roomId: string, currentUserType: UserType }) {
+export function Editor({ roomId, currentUserType }: { roomId: string, currentUserType: UserType }) {
   const status = useEditorStatus();
   const { threads } = useThreads();
 
@@ -50,8 +51,8 @@ export function Editor({ roomId, currentUserType }: {roomId: string, currentUser
         </div>
 
         <div className="editor-wrapper flex flex-col items-center justify-start">
-          {status === 'not-loaded' || status === 'loading' ? <Loader />: (
-            <div className="editor-inner min-h-[1100px] relative mb-5 h-fit w-full max-w-[800px]">
+          {status === 'not-loaded' || status === 'loading' ? <Loader /> : (
+            <div className="editor-inner min-h-[1100px] relative mb-5 h-fit w-full max-w-[800px] shadow-md lg:mb-10">
               <RichTextPlugin
                 contentEditable={
                   <ContentEditable className="editor-input h-full" />
